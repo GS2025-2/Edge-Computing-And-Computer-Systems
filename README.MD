@@ -87,7 +87,7 @@ O **NextWork** une **tecnologia web e IoT** para criar um ecossistema corporativ
 
 ### 1️⃣ Clone o repositório
 ```bash
-git clone https://github.com/GS2025-2/netWork.git
+git clone https://github.com/GS2025-2/nextWork.git
 cd netWork
 ````
 
@@ -144,5 +144,6 @@ Com a integração entre **inteligência de dados, conectividade IoT e interface
 ✨ *Projeto desenvolvido para Global Solution 2 – FIAP 2025.*
 
 ```
+
 
 
