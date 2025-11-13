@@ -1,0 +1,141 @@
+[
+    {
+        "id": "ee710ed9ec86df18",
+        "type": "tab",
+        "label": "Fluxo 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "mqtt_in_esp",
+        "type": "mqtt in",
+        "z": "ee710ed9ec86df18",
+        "name": "Receber ESP32",
+        "topic": "esp32/sensores",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "mqtt_broker",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 200,
+        "y": 160,
+        "wires": [
+            [
+                "json_node",
+                "debug_node"
+            ]
+        ]
+    },
+    {
+        "id": "json_node",
+        "type": "json",
+        "z": "ee710ed9ec86df18",
+        "name": "Converter JSON",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 420,
+        "y": 160,
+        "wires": [
+            [
+                "save_node"
+            ]
+        ]
+    },
+    {
+        "id": "debug_node",
+        "type": "debug",
+        "z": "ee710ed9ec86df18",
+        "name": "Ver dados",
+        "active": true,
+        "tosidebar": true,
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 420,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "save_node",
+        "type": "function",
+        "z": "ee710ed9ec86df18",
+        "name": "Salvar último valor",
+        "func": "global.set(\"dadosSensores\", msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 630,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "http_in",
+        "type": "http in",
+        "z": "ee710ed9ec86df18",
+        "name": "Endpoint /sensores",
+        "url": "/sensores",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 240,
+        "y": 340,
+        "wires": [
+            [
+                "send_node"
+            ]
+        ]
+    },
+    {
+        "id": "send_node",
+        "type": "function",
+        "z": "ee710ed9ec86df18",
+        "name": "Enviar dados",
+        "func": "const dados = global.get(\"dadosSensores\") || {ldr:0, pot:0, temperature:0};\nmsg.payload = dados;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 440,
+        "y": 340,
+        "wires": [
+            [
+                "http_response"
+            ]
+        ]
+    },
+    {
+        "id": "http_response",
+        "type": "http response",
+        "z": "ee710ed9ec86df18",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 640,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "mqtt_broker",
+        "type": "mqtt-broker",
+        "name": "HiveMQ Broker",
+        "broker": "broker.hivemq.com",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    }
+]
